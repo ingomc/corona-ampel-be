@@ -45,9 +45,6 @@ fetch(endpoint)
       })
     );
 
-    // Write to disk
-    console.log(finalJson);
-
     if (!fs.existsSync(dir)) {
       fs.mkdir(dir, { recursive: true }, (err) => {
         if (err) throw err;

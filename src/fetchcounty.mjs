@@ -1,7 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
 
-console.log("Fetching Start");
 const dir = "./build/county/";
 
 const endpoint =
@@ -66,7 +65,6 @@ const handleData = async (locationData) => {
       if (err) throw err;
     });
   }
-  console.log(`Write ${dir}${locationData.RS}.json`);
   fs.writeFileSync(`${dir}${locationData.RS}.json`, JSON.stringify(finalJson));
 };
 
