@@ -30,8 +30,11 @@ jobs:
       - name: Install
         run: npm i
 
-      - name: Fetch COUNTY Data
+      - name: Fetch COUNTYSSS Data
         run: npm run countys
+
+      - name: Fetch COUNTY Data
+        run: npm run county
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
