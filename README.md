@@ -1,13 +1,22 @@
 # Corona-Ampel-Backend
 
 
-
 ### Übersicht alle Landkreise
+
+```
+https://ingomc.github.io/corona-ampel-be/countys/index.json
+```
+
 ```
 https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=last_update%2CRS%2Ccases7_per_100k%2CGEN%2CBEZ&returnGeometry=false&f=json&outSR=4326&where=1=1
 ```
 
 ### Einzelnes County:
+
+```
+https://ingomc.github.io/corona-ampel-be/county/06531.json
+```
+
 ```
 https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=*&returnGeometry=false&f=json&outSR=4326&where=RS=12063
 ```
