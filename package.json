@@ -1,0 +1,26 @@
+{
+  "name": "corona-ampel-be",
+  "version": "1.0.0",
+  "description": "Save Data for my App",
+  "main": "index.js",
+  "scripts": {
+    "countys": "node --experimental-json-modules ./src/fetchcountys.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ingomc/corona-ampel-be.git"
+  },
+  "keywords": [
+    "covid",
+    "corona"
+  ],
+  "author": "Andre Bellmann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ingomc/corona-ampel-be/issues"
+  },
+  "homepage": "https://github.com/ingomc/corona-ampel-be#readme",
+  "devDependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
