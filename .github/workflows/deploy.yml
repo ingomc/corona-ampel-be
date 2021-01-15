@@ -41,3 +41,17 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/
+
+      - name: Commit files # commit the output folder
+        run: |
+          git config --local user.email "info@corona-ampel.app"
+          git config --local user.name "Andre Robot"
+          git add .
+          git commit -m "Add generated data"
+        
+      - name: Push changes # push the output folder to your repo
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main #ignore if your branch is master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
