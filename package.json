@@ -4,7 +4,8 @@
   "description": "Save Data for my App",
   "main": "index.js",
   "scripts": {
-    "countys": "node --experimental-json-modules ./src/fetchcountys.mjs"
+    "countys": "node --experimental-json-modules ./src/fetchcountys.mjs",
+    "county": "node --experimental-json-modules ./src/fetchcounty.mjs"
   },
   "repository": {
     "type": "git",
