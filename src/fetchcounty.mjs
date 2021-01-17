@@ -4,13 +4,13 @@ import fs from "fs";
 const dir = "./build/county/";
 
 const endpoint =
-  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=RS,OBJECTID&returnGeometry=false&f=json&outSR=4326&where=1=1";
+  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=RS,AGS,OBJECTID&returnGeometry=false&f=json&outSR=4326&where=1=1";
 
 const getEndpointCounty = (RS) =>
   `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=*&returnGeometry=false&f=json&outSR=4326&where=RS=${RS}`;
 
-const getEndpointIts = (OBJECTID) =>
-  `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/DIVI_Intensivregister_Landkreise/FeatureServer/0/query?f=json&where=OBJECTID%3D%27${OBJECTID}%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*`;
+const getEndpointIts = (AGS) =>
+  `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/DIVI_Intensivregister_Landkreise/FeatureServer/0/query?f=json&where=AGS%3D%27${AGS}%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*`;
 
 // Empty Json, gets filled and written to disk
 
@@ -19,16 +19,24 @@ const handleData = async (locationData) => {
   // Get all Stats
   let allData = await fetch(getEndpointCounty(locationData.RS))
     .then((res) => res.json())
-    .then((_json) => _json.features[0].attributes).catch((error) => {
+    .then((_json) => { 
+      // console.log(_json.features[0].attributes);
+      return _json.features[0].attributes
+    }).catch((error) => {
       console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointCounty: ${locationData.RS}`);
     });
 
 // Get ITS Stats
-  let itsData = await fetch(getEndpointIts(locationData.OBJECTID))
+// console.log();
+  let itsData = await fetch(getEndpointIts(locationData.AGS))
     .then((res) => res.json())
-    .then((_json) => _json.features[0]).catch((error) => {
-      console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointIts: ${locationData.OBJECTID}`);
-      console.log(getEndpointIts(locationData.RS));
+    .then((_json) => {
+      // console.log(_json.features[0]);
+      return _json.features[0];
+    }).catch((error) => {
+      console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointIts: ${locationData.AGS}`);
+      console.log(getEndpointIts(locationData.AGS));
+      console.log(getEndpointIts(error));
     });
 
   let itsDataFinalJson = {
@@ -42,6 +50,7 @@ const handleData = async (locationData) => {
     Anteil_COVID_betten: null,
     daten_stand: null,
   };
+  // console.log(itsData);
 
   if (typeof itsData !== "undefined") {
     itsDataFinalJson = {
