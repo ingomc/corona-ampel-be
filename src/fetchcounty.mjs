@@ -4,13 +4,13 @@ import fs from "fs";
 const dir = "./build/county/";
 
 const endpoint =
-  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=RS&returnGeometry=false&f=json&outSR=4326&where=1=1";
+  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=RS,OBJECTID&returnGeometry=false&f=json&outSR=4326&where=1=1";
 
 const getEndpointCounty = (RS) =>
   `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=*&returnGeometry=false&f=json&outSR=4326&where=RS=${RS}`;
 
-const getEndpointIts = (RS) =>
-  `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/DIVI_Intensivregister_Landkreise/FeatureServer/0/query?f=json&where=AGS%3D%27${RS}%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22xmin%22%3A405955.5271232863%2C%22ymin%22%3A5873740.100125852%2C%22xmax%22%3A1222914.4854350328%2C%22ymax%22%3A7507658.016749346%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&orderByFields=betten_belegt%20desc&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=false`;
+const getEndpointIts = (OBJECTID) =>
+  `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/DIVI_Intensivregister_Landkreise/FeatureServer/0/query?f=json&where=OBJECTID%3D%27${OBJECTID}%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*`;
 
 // Empty Json, gets filled and written to disk
 
@@ -19,12 +19,17 @@ const handleData = async (locationData) => {
   // Get all Stats
   let allData = await fetch(getEndpointCounty(locationData.RS))
     .then((res) => res.json())
-    .then((_json) => _json.features[0].attributes);
+    .then((_json) => _json.features[0].attributes).catch((error) => {
+      console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointCounty: ${locationData.RS}`);
+    });
 
 // Get ITS Stats
-  let itsData = await fetch(getEndpointIts(locationData.RS))
+  let itsData = await fetch(getEndpointIts(locationData.OBJECTID))
     .then((res) => res.json())
-    .then((_json) => _json.features[0]);
+    .then((_json) => _json.features[0]).catch((error) => {
+      console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointIts: ${locationData.OBJECTID}`);
+      console.log(getEndpointIts(locationData.RS));
+    });
 
   let itsDataFinalJson = {
     betten_frei: null,
@@ -66,15 +71,29 @@ const handleData = async (locationData) => {
     });
   }
   fs.writeFileSync(`${dir}${locationData.RS}.json`, JSON.stringify(finalJson));
+  // console.log(
+  //   '\x1b[42m\x1b[30m%s\x1b[0m',
+  //   ` ✔  Datei gespeichert: ${dir}`,
+  // );
 };
 
 // fetch data from api, and iterate over countys
 fetch(endpoint)
   .then((res) => res.json())
   .then(async (_json) => {
+    // console.log(endpoint);
+    // console.log(_json);
     await Promise.all(
       _json.features.map(async (_location) => {
         await handleData(_location.attributes);
       })
     );
+  }).then(() => {
+    console.log(
+      '\x1b[42m\x1b[30m%s\x1b[0m',
+      ` ✔  ======== FERTIG ===========`,
+    );
+  }).catch((error) => {
+    console.log('\x1b[31m%s\x1b[0m', ` x fetch(endpoint)`);
+    console.log(error);
   });
