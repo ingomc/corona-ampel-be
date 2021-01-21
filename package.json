@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "countys": "node --experimental-json-modules ./src/fetchcountys.mjs",
-    "county": "node --experimental-json-modules ./src/fetchcounty.mjs"
+    "county": "node --experimental-json-modules ./src/fetchcounty.mjs",
+    "states": "node --experimental-json-modules ./src/fetchstates.mjs"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/ingomc/corona-ampel-be#readme",
   "devDependencies": {
+    "moment": "^2.29.1",
     "node-fetch": "^2.6.1"
   }
 }
