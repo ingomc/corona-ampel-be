@@ -6,7 +6,8 @@
   "scripts": {
     "countys": "node --experimental-json-modules ./src/fetchcountys.mjs",
     "county": "node --experimental-json-modules ./src/fetchcounty.mjs",
-    "states": "node --experimental-json-modules ./src/fetchstates.mjs"
+    "states": "node --experimental-json-modules ./src/fetchstates.mjs",
+    "global": "node --experimental-json-modules ./src/fetchglobal.mjs"
   },
   "repository": {
     "type": "git",

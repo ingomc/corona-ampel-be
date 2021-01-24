@@ -19,22 +19,30 @@ const handleData = async (locationData) => {
   // Get all Stats
   let allData = await fetch(getEndpointCounty(locationData.RS))
     .then((res) => res.json())
-    .then((_json) => { 
+    .then((_json) => {
       // console.log(_json.features[0].attributes);
-      return _json.features[0].attributes
-    }).catch((error) => {
-      console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointCounty: ${locationData.RS}`);
+      return _json.features[0].attributes;
+    })
+    .catch((error) => {
+      console.log(
+        "\x1b[31m%s\x1b[0m",
+        ` x fetch(getEndpointCounty: ${locationData.RS}`
+      );
     });
 
-// Get ITS Stats
-// console.log();
+  // Get ITS Stats
+  // console.log();
   let itsData = await fetch(getEndpointIts(locationData.AGS))
     .then((res) => res.json())
     .then((_json) => {
       // console.log(_json.features[0]);
       return _json.features[0];
-    }).catch((error) => {
-      console.log('\x1b[31m%s\x1b[0m', ` x fetch(getEndpointIts: ${locationData.AGS}`);
+    })
+    .catch((error) => {
+      console.log(
+        "\x1b[31m%s\x1b[0m",
+        ` x fetch(getEndpointIts: ${locationData.AGS}`
+      );
       console.log(getEndpointIts(locationData.AGS));
       console.log(getEndpointIts(error));
     });
@@ -67,7 +75,7 @@ const handleData = async (locationData) => {
     };
   }
 
-  const finalJson = {data: []};
+  const finalJson = { data: [] };
 
   finalJson.data.push({
     ...itsDataFinalJson,
@@ -97,12 +105,11 @@ fetch(endpoint)
         await handleData(_location.attributes);
       })
     );
-  }).then(() => {
-    console.log(
-      '\x1b[42m\x1b[30m%s\x1b[0m',
-      ` ✔  ======== FERTIG ===========`,
-    );
-  }).catch((error) => {
-    console.log('\x1b[31m%s\x1b[0m', ` x fetch(endpoint)`);
+  })
+  .then(() => {
+    console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  ======== FERTIG ===========`);
+  })
+  .catch((error) => {
+    console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpoint)`);
     console.log(error);
   });

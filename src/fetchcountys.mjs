@@ -20,8 +20,12 @@ const finalJson = {
 const handleData = async (locationData) => {
   const newCases = await fetch(getNewCasesUrl(locationData.RS))
     .then((res) => res.json())
-    .then((_json) => _json.features[0].attributes.value).catch((error) => {
-      console.log('\x1b[31m%s\x1b[0m', ` x Error fetching handleData: fetch(getNewCasesUrl)`);
+    .then((_json) => _json.features[0].attributes.value)
+    .catch((error) => {
+      console.log(
+        "\x1b[31m%s\x1b[0m",
+        ` x Error fetching handleData: fetch(getNewCasesUrl)`
+      );
       console.log(error);
     });
 
@@ -55,13 +59,14 @@ fetch(endpoint)
     }
     finalJson.locations.sort((a, b) => {
       return a.RS - b.RS;
-  });
+    });
     fs.writeFileSync(`${dir}${file}`, JSON.stringify(finalJson));
     console.log(
-      '\x1b[42m\x1b[30m%s\x1b[0m',
-      ` ✔  Datei gespeichert: ${dir}${file}`,
+      "\x1b[42m\x1b[30m%s\x1b[0m",
+      ` ✔  Datei gespeichert: ${dir}${file}`
     );
-  }).catch((error) => {
-    console.log('\x1b[31m%s\x1b[0m', ` x Error fetching fetch(endpoint)`);
+  })
+  .catch((error) => {
+    console.log("\x1b[31m%s\x1b[0m", ` x Error fetching fetch(endpoint)`);
     console.log(error);
   });
