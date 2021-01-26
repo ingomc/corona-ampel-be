@@ -12,7 +12,7 @@ const endpointNewCasesGermany =
 const endpointNewDeathsGermany =
   "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?f=json&where=NeuerTodesfall%20IN(1%2C%20-1)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22AnzahlTodesfall%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&resultType=standard&cacheHint=true";
 
-const endpointGlobal = "https://disease.sh/v3/covid-19/all";
+const endpointGlobal = "https://disease.sh/v3/covid-19/all?yesterday=true";
 
 const finalJson = {
   global: {},
