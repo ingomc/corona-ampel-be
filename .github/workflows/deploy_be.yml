@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 4,5,7 * * *'
+    - cron: '0 4,5,7,9 * * *'
 
 jobs:
   deploy:
@@ -35,6 +35,12 @@ jobs:
 
       - name: Fetch COUNTY Data
         run: npm run county
+
+      - name: Fetch States Data
+        run: npm run global
+
+      - name: Fetch States Data
+        run: npm run states
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
