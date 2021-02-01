@@ -1,4 +1,4 @@
-name: Deploy Countys
+name: Deploy ALL
 
 on:
   push:
