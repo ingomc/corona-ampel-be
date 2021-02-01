@@ -40,6 +40,11 @@ await fetch(endpointNewCasesGermany)
   .then((res) => res.json())
   .then(async (_json) => {
     finalJson.germany.newCases = _json.features[0].attributes.value;
+    // reformat date
+    finalJson.germany.last_update = moment(
+      finalJson.germany.last_update.split(" U"),
+      "DD.MM.YYYY, HH:mm"
+    ).format("DD.MM., HH:mm");
   })
   .then(() => {
     console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  endpointNewCasesGermany`);
@@ -67,13 +72,12 @@ await fetch(endpointNewDeathsGermany)
 await fetch(endpointGlobal)
   .then((res) => res.json())
   .then(async (_json) => {
-
     finalJson.global = {
       ..._json,
     };
-    finalJson.global.last_update =`${moment(_json.updated).format(
-        "DD.MM., HH:mm"
-      )} Uhr`;
+    finalJson.global.last_update = `${moment(_json.updated).format(
+      "DD.MM., HH:mm"
+    )} Uhr`;
   })
   .then(() => {
     console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  endpointGlobal`);
