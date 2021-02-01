@@ -12,12 +12,17 @@ const finalJson = {
 };
 
 const endpoint = "https://rki-vaccination-data.vercel.app/api";
+const endpointMorgenpost = "https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json";
 
 // fetch data from api, and iterate over states
 fetch(endpoint)
   .then((res) => res.json())
   .then(async (_json) => {
     // console.log(_json);
+    let germanyMorgenpost;
+    await fetch(endpointMorgenpost).then((res) => res.json()).then(async (_jsonMp) => {
+        germanyMorgenpost = _jsonMp.find((item) => item.id == 'de');
+    });
 
     // for (const key in user) {
     for (const state in _json.states) {
@@ -37,6 +42,7 @@ fetch(endpoint)
       total: _json.total,
       sum_vaccine_doses: _json.sum_vaccine_doses,
       difference_to_the_previous_day: _json.difference_to_the_previous_day,
+      cumsum_7_days_ago: germanyMorgenpost.cumsum_7_days_ago,
     };
     // console.log(finalJson);
 
