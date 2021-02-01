@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
+import moment from "moment";
 
 const dir = "./build/county/";
 
@@ -29,6 +30,12 @@ const handleData = async (locationData) => {
         ` x fetch(getEndpointCounty: ${locationData.RS}`
       );
     });
+
+  // reformat date
+  allData.last_update = moment(
+    allData.last_update.split(" U"),
+    "DD.MM.YYYY, HH:mm"
+  ).format("DD.MM., HH:mm");
 
   // Get ITS Stats
   // console.log();

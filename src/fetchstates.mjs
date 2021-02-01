@@ -53,7 +53,7 @@ const handleData = async (stateData) => {
     });
 
   stateData.last_update = `${moment(stateData.Aktualisierung).format(
-    "DD.MM.YYYY, HH:mm"
+    "DD.MM., HH:mm"
   )} Uhr`;
   finalJson.last_update = stateData.last_update;
 

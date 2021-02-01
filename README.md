@@ -17,3 +17,8 @@ https://ingomc.github.io/corona-ampel-be/county/06531.json
 ```
 https://ingomc.github.io/corona-ampel-be/states/index.json
 ```
+
+### Impfübersicht Bundesländer
+```
+https://ingomc.github.io/corona-ampel-be/vaccine/index.json
+```

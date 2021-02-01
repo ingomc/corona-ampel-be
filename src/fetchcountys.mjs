@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
+import moment from "moment";
 
 console.log("Fetching Start");
 const dir = "./build/countys/";
@@ -29,6 +30,11 @@ const handleData = async (locationData) => {
       console.log(error);
     });
 
+  // reformat date
+  locationData.last_update = moment(
+    locationData.last_update.split(" U"),
+    "DD.MM.YYYY, HH:mm"
+  ).format("DD.MM., HH:mm");
   finalJson.date = locationData.last_update;
 
   delete locationData.last_update; // we dont need it per county

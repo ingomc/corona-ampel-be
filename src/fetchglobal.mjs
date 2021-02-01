@@ -72,7 +72,7 @@ await fetch(endpointGlobal)
       ..._json,
     };
     finalJson.global.last_update =`${moment(_json.updated).format(
-        "DD.MM.YYYY, HH:mm"
+        "DD.MM., HH:mm"
       )} Uhr`;
   })
   .then(() => {
