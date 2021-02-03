@@ -45,6 +45,9 @@ jobs:
       - name: Fetch Vaccine Data
         run: npm run vaccine
 
+      - name: Fetch browse Data
+        run: npm run browse
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
