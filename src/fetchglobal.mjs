@@ -77,7 +77,7 @@ await fetch(endpointGlobal)
     };
     finalJson.global.last_update = `${moment(_json.updated).format(
       "DD.MM., HH:mm"
-    )} Uhr`;
+    )}`;
   })
   .then(() => {
     console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  endpointGlobal`);

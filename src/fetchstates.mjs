@@ -54,7 +54,7 @@ const handleData = async (stateData) => {
 
   stateData.last_update = `${moment(stateData.Aktualisierung).format(
     "DD.MM., HH:mm"
-  )} Uhr`;
+  )}`;
   finalJson.last_update = stateData.last_update;
 
   delete stateData.Aktualisierung; // no good name
