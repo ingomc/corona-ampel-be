@@ -70,7 +70,7 @@ fetch(endpoint)
     });
     finalJson.lowest5 = tempJson.locations.splice(0, 5);
     finalJson.highest5 = tempJson.locations.splice(
-        tempJson.locations.length - 4,
+        tempJson.locations.length - 5,
       tempJson.locations.length
     ).reverse();
 
@@ -78,7 +78,7 @@ fetch(endpoint)
       return a.EWZ - b.EWZ;
     });
     finalJson.highest5EWZ = tempJson.locations.splice(
-        tempJson.locations.length - 4,
+        tempJson.locations.length - 5,
       tempJson.locations.length
     ).reverse();
 
@@ -86,7 +86,7 @@ fetch(endpoint)
       return a.cases_per_100k - b.cases_per_100k;
     });
     finalJson.highest5casesPer100k = tempJson.locations.splice(
-        tempJson.locations.length - 4,
+        tempJson.locations.length - 5,
       tempJson.locations.length
     ).reverse();
 
