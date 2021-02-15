@@ -12,7 +12,8 @@ const finalJson = {
 };
 
 const endpoint = "https://rki-vaccination-data.vercel.app/api";
-const endpointMorgenpost = "https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json";
+const endpointMorgenpost =
+  "https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json";
 
 // fetch data from api, and iterate over states
 fetch(endpoint)
@@ -20,9 +21,11 @@ fetch(endpoint)
   .then(async (_json) => {
     // console.log(_json);
     let germanyMorgenpost;
-    await fetch(endpointMorgenpost).then((res) => res.json()).then(async (_jsonMp) => {
-        germanyMorgenpost = _jsonMp.find((item) => item.id == 'de');
-    });
+    await fetch(endpointMorgenpost)
+      .then((res) => res.json())
+      .then(async (_jsonMp) => {
+        germanyMorgenpost = _jsonMp.find((item) => item.id == "de");
+      });
 
     // for (const key in user) {
     for (const state in _json.states) {
@@ -31,7 +34,9 @@ fetch(endpoint)
         name: state,
         total: _json.states[state].total,
         rs: _json.states[state].rs,
-        vaccinated: _json.states[state].vaccinated,
+        vaccinated:
+          _json.states[state].vaccinated +
+          _json.states[state]["2nd_vaccination"].vaccinated,
         difference_to_the_previous_day:
           _json.states[state].difference_to_the_previous_day,
       });
@@ -47,18 +52,18 @@ fetch(endpoint)
     // console.log(finalJson);
 
     if (!fs.existsSync(dir)) {
-        fs.mkdir(dir, { recursive: true }, (err) => {
-          if (err) throw err;
-        });
-      }
-  
-      fs.writeFileSync(`${dir}${file}`, JSON.stringify(finalJson));
-      console.log(
-        "\x1b[42m\x1b[30m%s\x1b[0m",
-        ` ✔  Datei gespeichert: ${dir}${file}`
-      );
+      fs.mkdir(dir, { recursive: true }, (err) => {
+        if (err) throw err;
+      });
+    }
 
-  }).catch((error) => {
+    fs.writeFileSync(`${dir}${file}`, JSON.stringify(finalJson));
+    console.log(
+      "\x1b[42m\x1b[30m%s\x1b[0m",
+      ` ✔  Datei gespeichert: ${dir}${file}`
+    );
+  })
+  .catch((error) => {
     console.log("\x1b[31m%s\x1b[0m", ` x Error fetching fetch(endpoint)`);
     console.log(error);
   });
