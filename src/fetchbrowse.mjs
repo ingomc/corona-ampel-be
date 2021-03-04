@@ -86,7 +86,7 @@ fetch(endpoint)
       return a.cases_per_100k - b.cases_per_100k;
     });
     finalJson.highest5casesPer100k = tempJson.locations.splice(
-        tempJson.locations.length - 5,
+        tempJson.locations.length - 20,
       tempJson.locations.length
     ).reverse();
 
