@@ -67,3 +67,18 @@ jobs:
           branch: main #ignore if your branch is master
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
+
+      - name: FTP Upload
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./build/
+          server-dir: ampeldata.andre-bellmann.de/
+
+      - name: Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: json-artifact
+          path: ./build/
