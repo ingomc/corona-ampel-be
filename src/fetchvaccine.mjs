@@ -25,6 +25,13 @@ fetch(endpoint)
       .then((res) => res.json())
       .then(async (_jsonMp) => {
         germanyMorgenpost = _jsonMp.find((item) => item.id == "de");
+      }).catch((error) => {
+        console.log(
+          "\x1b[31m%s\x1b[0m",
+          ` x Error fetching handleData: fetch(endpointMorgenpost)`
+        );
+        console.log(error);
+        throw new Error("x Error fetching handleData: fetch(endpointMorgenpost)");
       });
 
     // for (const key in user) {

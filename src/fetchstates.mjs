@@ -37,6 +37,7 @@ const handleData = async (stateData) => {
         ` x Error fetching handleData: fetch(getEndpointNewCases)`
       );
       console.log(error);
+      throw new Error(" x Error fetching handleData: fetch(getEndpointNewCases)");
     });
 
   const newDeaths = await fetch(
@@ -50,6 +51,7 @@ const handleData = async (stateData) => {
         ` x Error fetching handleData: fetch(getEndpointNewDeaths)`
       );
       console.log(error);
+      throw new Error("x Error fetching handleData: fetch(getEndpointNewDeaths)");
     });
 
   stateData.last_update = `${moment(stateData.Aktualisierung).format(

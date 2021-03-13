@@ -29,6 +29,8 @@ const handleData = async (locationData) => {
         "\x1b[31m%s\x1b[0m",
         ` x fetch(getEndpointCounty: ${locationData.RS}`
       );
+      console.log(error);
+      throw new Error("x fetch(getEndpointCounty");
     });
 
   // reformat date
@@ -51,7 +53,8 @@ const handleData = async (locationData) => {
         ` x fetch(getEndpointIts: ${locationData.AGS}`
       );
       console.log(getEndpointIts(locationData.AGS));
-      console.log(getEndpointIts(error));
+      console.log(error);
+      throw new Error("x fetch(getEndpointIts");
     });
 
   let itsDataFinalJson = {

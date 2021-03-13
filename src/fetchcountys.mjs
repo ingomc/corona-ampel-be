@@ -28,6 +28,7 @@ const handleData = async (locationData) => {
         ` x Error fetching handleData: fetch(getNewCasesUrl)`
       );
       console.log(error);
+      throw new Error("x Error fetching handleData: fetch(getNewCasesUrl)");
     });
 
   // reformat date
