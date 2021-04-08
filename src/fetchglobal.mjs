@@ -8,11 +8,10 @@ const dir = "./build/global/";
 const file = "index.json";
 
 const endpointIncidenceGermany =
-  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19_Landkreise_Table_Demo_18b5f806160a4aa686ca65819fbe4462/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=last_update,EWZ,cases,cases7_per_100k&orderByFields=RS%20asc&resultOffset=0&resultRecordCount=1&resultType=standard&cacheHint=true";
-const endpointNewCasesGermany =
-  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?f=json&where=NeuerFall%20IN(1%2C%20-1)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22AnzahlFall%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&resultType=standard&cacheHint=true";
-const endpointNewDeathsGermany =
-  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?f=json&where=NeuerTodesfall%20IN(1%2C%20-1)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22AnzahlTodesfall%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&resultType=standard&cacheHint=true";
+  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/rki_key_data_blbrdv/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=AdmUnitId%20asc&resultOffset=0&resultRecordCount=1&resultType=standard&cacheHint=true";
+const endpointLastUpdate =
+  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=last_update&returnGeometry=false&f=json&outSR=4326&where=RS=07135";
+
 
 const endpointGlobal = "https://disease.sh/v3/covid-19/all?yesterday=true";
 
@@ -25,8 +24,15 @@ const finalJson = {
 await fetch(endpointIncidenceGermany)
   .then((res) => res.json())
   .then(async (_json) => {
+    const data = _json.features[0].attributes;
     finalJson.germany = {
-      ..._json.features[0].attributes,
+      "last_update":data["AnzFall"],
+    "EWZ": 83166711,
+    "cases": data["AnzFall"],
+    "cases7_per_100k":data["Inz7T"],
+    "ObjectId": data["ObjectId"],
+    "newCases": data["AnzFallNeu"],
+    "newDeaths":data["AnzTodesfallNeu"] 
     };
   })
   .then(() => {
@@ -39,44 +45,27 @@ await fetch(endpointIncidenceGermany)
         // throw new Error("x fetch(endpointIncidenceGermany)");
   });
 
-// new cases germany
-await fetch(endpointNewCasesGermany)
+// last update
+await fetch(endpointLastUpdate)
   .then((res) => res.json())
   .then(async (_json) => {
-    finalJson.germany.newCases = _json.features[0].attributes.value;
-    // reformat date
-    finalJson.germany.last_update = moment(
-      finalJson.germany.last_update.split(" U"),
+    const data = _json.features[0].attributes;
+    finalJson.germany["last_update"] =  moment(
+      data["last_update"].split(" U"),
       "DD.MM.YYYY, HH:mm"
-    ).format("DD.MM., HH:mm");
+    ).format("DD.MM., HH:mm")   ; 
   })
   .then(() => {
-    console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  endpointNewCasesGermany`);
+    console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  endpointLastUpdate`);
   })
   .catch((error) => {
-    console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointNewCasesGermany)`);
+    console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointLastUpdate)`);
     console.log(error);
-    errors.push("x fetch(endpointNewCasesGermany)");
-        // throw new Error("x fetch(endpointNewCasesGermany)");
+    errors.push("x fetch(endpointLastUpdate)");
+        // throw new Error("x fetch(endpointLastUpdate)");
   });
 
-// new deaths germany
-await fetch(endpointNewDeathsGermany)
-  .then((res) => res.json())
-  .then(async (_json) => {
-    finalJson.germany.newDeaths = _json.features[0].attributes.value;
-  })
-  .then(() => {
-    console.log("\x1b[42m\x1b[30m%s\x1b[0m", ` ✔  endpointNewDeathsGermany`);
-  })
-  .catch((error) => {
-    console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointNewDeathsGermany)`);
-    console.log(error);
-    errors.push("x fetch(endpointNewDeathsGermany)");
-        // throw new Error("x fetch(endpointNewDeathsGermany)");
-  });
-
-// new deaths germany
+// global
 await fetch(endpointGlobal)
   .then((res) => res.json())
   .then(async (_json) => {
