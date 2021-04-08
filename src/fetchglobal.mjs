@@ -2,6 +2,8 @@ import fetch from "node-fetch";
 import fs from "fs";
 import moment from "moment";
 
+let errors = [];
+
 const dir = "./build/global/";
 const file = "index.json";
 
@@ -33,7 +35,8 @@ await fetch(endpointIncidenceGermany)
   .catch((error) => {
     console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointIncidenceGermany)`);
     console.log(error);
-    throw new Error("x fetch(endpointIncidenceGermany)");
+    errors.push("x fetch(endpointIncidenceGermany)");
+        // throw new Error("x fetch(endpointIncidenceGermany)");
   });
 
 // new cases germany
@@ -53,7 +56,8 @@ await fetch(endpointNewCasesGermany)
   .catch((error) => {
     console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointNewCasesGermany)`);
     console.log(error);
-    throw new Error("x fetch(endpointNewCasesGermany)");
+    errors.push("x fetch(endpointNewCasesGermany)");
+        // throw new Error("x fetch(endpointNewCasesGermany)");
   });
 
 // new deaths germany
@@ -68,7 +72,8 @@ await fetch(endpointNewDeathsGermany)
   .catch((error) => {
     console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointNewDeathsGermany)`);
     console.log(error);
-    throw new Error("x fetch(endpointNewDeathsGermany)");
+    errors.push("x fetch(endpointNewDeathsGermany)");
+        // throw new Error("x fetch(endpointNewDeathsGermany)");
   });
 
 // new deaths germany
@@ -88,7 +93,8 @@ await fetch(endpointGlobal)
   .catch((error) => {
     console.log("\x1b[31m%s\x1b[0m", ` x fetch(endpointGlobal)`);
     console.log(error);
-    throw new Error("x fetch(endpointGlobal)");
+    errors.push("x  fetch(endpointGlobal)");
+        // throw new Error("x  fetch(endpointGlobal)");
   });
 
 // console.log(finalJson);
@@ -98,8 +104,13 @@ if (!fs.existsSync(dir)) {
     if (err) throw err;
   });
 }
-fs.writeFileSync(`${dir}${file}`, JSON.stringify(finalJson));
-console.log(
-  "\x1b[42m\x1b[30m%s\x1b[0m",
-  ` ✔  Datei gespeichert: ${dir}${file}`
-);
+if (errors.length > 0) {
+  errors.forEach(errormessage => console.log("\x1b[41m\x1b[30m%s\x1b[0m",errormessage));
+} else {
+  fs.writeFileSync(`${dir}${file}`, JSON.stringify(finalJson));
+  console.log(
+    "\x1b[42m\x1b[30m%s\x1b[0m",
+    ` ✔  Datei gespeichert: ${dir}${file}`
+  );
+
+}
