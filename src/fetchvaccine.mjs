@@ -13,7 +13,7 @@ const finalJson = {
 
 const endpoint = "https://rki-vaccination-data.vercel.app/api";
 const endpointMorgenpost =
-  "https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json";
+  "https://interaktiv.morgenpost.de/data/corona/rki-vaccination.json";
 
 // fetch data from api, and iterate over states
 fetch(endpoint)
