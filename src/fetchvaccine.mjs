@@ -52,7 +52,7 @@ fetch(endpoint)
     finalJson.last_update = moment(_json.lastUpdate).format("DD.MM., HH:mm");
     finalJson.germany = {
       total: _json.total,
-      sum_vaccine_doses: _json.sum_vaccine_doses,
+      sum_vaccine_doses: germanyMorgenpost.cumsum_latest,
       difference_to_the_previous_day: _json.difference_to_the_previous_day,
       cumsum_7_days_ago: germanyMorgenpost.cumsum_7_days_ago,
     };
