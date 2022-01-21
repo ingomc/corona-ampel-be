@@ -11,7 +11,7 @@ const finalJson = {
   states: [],
 };
 
-const endpoint = "https://rki-vaccination-data.vercel.app/api";
+const endpoint = "https://rki-vaccination-data.vercel.app/api/v2/";
 const endpointMorgenpost =
   "https://interaktiv.morgenpost.de/data/corona/rki-vaccination.json";
 
