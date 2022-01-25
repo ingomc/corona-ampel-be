@@ -12,51 +12,41 @@ const finalJson = {
 };
 
 const endpoint = "https://rki-vaccination-data.vercel.app/api/v2/";
-const endpointMorgenpost =
-  "https://interaktiv.morgenpost.de/data/corona/rki-vaccination.json";
 
 // fetch data from api, and iterate over states
 fetch(endpoint)
   .then((res) => res.json())
   .then(async (_json) => {
-    // console.log(_json);
-    let germanyMorgenpost;
-    await fetch(endpointMorgenpost)
-      .then((res) => res.json())
-      .then(async (_jsonMp) => {
-        germanyMorgenpost = _jsonMp.find((item) => item.id == "de");
-      }).catch((error) => {
-        console.log(
-          "\x1b[31m%s\x1b[0m",
-          ` x Error fetching handleData: fetch(endpointMorgenpost)`
-        );
-        console.log(error);
-        throw new Error("x Error fetching handleData: fetch(endpointMorgenpost)");
-      });
 
-    // for (const key in user) {
-    for (const state in _json.states) {
-      // console.log(`${state}: ${_json.states[state]}`);
-      finalJson.states.push({
-        name: state,
-        total: _json.states[state].total,
-        rs: _json.states[state].rs,
-        vaccinated:
-          _json.states[state].vaccinated +
-          _json.states[state]["2nd_vaccination"].vaccinated,
-        difference_to_the_previous_day:
-          _json.states[state].difference_to_the_previous_day,
-      });
-    }
+      _json.data.forEach(state => {
+        console.log(state);
+        if (state.name === "Deutschland") {
+          finalJson.germany = {
+            total: state.inhabitants,
+            sum_vaccine_doses: 
+            state.fullyVaccinated.doses,
+            difference_to_the_previous_day: state.fullyVaccinated.differenceToThePreviousDay,
+            cumsum_7_days_ago: state.fullyVaccinated.differenceToThePreviousDay*7,
+          };
+        }
+        if (!state.isState) {
+          return false;
+        }
+        finalJson.states.push({
+          name: state.name,
+          total: state.inhabitants,
+          rs: state.rs,
+          vaccinated:
+            state.fullyVaccinated.doses,
+          difference_to_the_previous_day:
+          state.fullyVaccinated.differenceToThePreviousDay,
+        });
+      }); 
+    
 
     finalJson.last_update = moment(_json.lastUpdate).format("DD.MM., HH:mm");
-    finalJson.germany = {
-      total: _json.total,
-      sum_vaccine_doses: germanyMorgenpost.cumsum_latest,
-      difference_to_the_previous_day: _json.difference_to_the_previous_day,
-      cumsum_7_days_ago: germanyMorgenpost.cumsum_7_days_ago,
-    };
-    // console.log(finalJson);
+
+    console.log(finalJson);
 
     if (!fs.existsSync(dir)) {
       fs.mkdir(dir, { recursive: true }, (err) => {
