@@ -37,7 +37,7 @@ fetch(endpoint)
           total: state.inhabitants,
           rs: state.rs,
           vaccinated:
-            state.fullyVaccinated.doses,
+            state.fullyVaccinated.doses*2,
           difference_to_the_previous_day:
           state.fullyVaccinated.differenceToThePreviousDay,
         });
