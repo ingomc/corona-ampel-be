@@ -19,12 +19,12 @@ fetch(endpoint)
   .then(async (_json) => {
 
       _json.data.forEach(state => {
-        console.log(state);
+        // console.log(state);
         if (state.name === "Deutschland") {
           finalJson.germany = {
             total: state.inhabitants,
             sum_vaccine_doses: 
-            state.fullyVaccinated.doses,
+            state.fullyVaccinated.doses*2,
             difference_to_the_previous_day: state.fullyVaccinated.differenceToThePreviousDay,
             cumsum_7_days_ago: state.fullyVaccinated.differenceToThePreviousDay*7,
           };
@@ -46,7 +46,7 @@ fetch(endpoint)
 
     finalJson.last_update = moment(_json.lastUpdate).format("DD.MM., HH:mm");
 
-    console.log(finalJson);
+    // console.log(finalJson);
 
     if (!fs.existsSync(dir)) {
       fs.mkdir(dir, { recursive: true }, (err) => {
