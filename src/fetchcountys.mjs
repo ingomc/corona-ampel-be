@@ -7,10 +7,10 @@ const dir = "./build/countys/";
 const file = "index.json";
 
 const endpoint =
-  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=RS%2Clast_update%2CRS%2Ccases7_per_100k%2CGEN%2CBEZ&returnGeometry=false&f=json&outSR=4326&where=1=1&orderByFields=RS%20desc";
+  "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=RS%2Clast_update%2CRS%2CAdmUnitId%2CRS%2Ccases7_per_100k%2CGEN%2CBEZ&returnGeometry=false&f=json&outSR=4326&where=1=1&orderByFields=RS%20desc";
 
-const getNewCasesUrl = (RS) =>
-  `https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?f=json&where=(NeuerFall%20IN(1%2C%20-1))%20AND%20(IdLandkreis%3D%27${RS}%27)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22AnzahlFall%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&resultType=standard&cacheHint=true`;
+const getNewCasesUrl = (AdmUnitId) =>
+`https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/rki_key_data_v/FeatureServer/0/query?f=json&where=AdmUnitId%3D${AdmUnitId}&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=AdmUnitId%20asc&resultOffset=0&resultRecordCount=1&resultType=standard&cacheHint=true`;
 
 // Empty Json, gets filled and written to disk
 const finalJson = {
@@ -19,7 +19,7 @@ const finalJson = {
 
 // called inside fetch, fetches new cases, pushes to json
 const handleData = async (locationData) => {
-  const newCases = await fetch(getNewCasesUrl(locationData.RS))
+  const newCases = await fetch(getNewCasesUrl(locationData.AdmUnitId))
     .then((res) => res.json())
     .then((_json) => _json.features[0].attributes.value)
     .catch((error) => {
