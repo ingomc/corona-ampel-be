@@ -21,7 +21,7 @@ const finalJson = {
 const handleData = async (locationData) => {
   const newCases = await fetch(getNewCasesUrl(locationData.AdmUnitId))
     .then((res) => res.json())
-    .then((_json) => _json.features[0].attributes.value)
+    .then((_json) => _json.features[0].attributes.AnzFallNeu)
     .catch((error) => {
       console.log(
         "\x1b[31m%s\x1b[0m",
