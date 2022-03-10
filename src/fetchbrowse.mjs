@@ -41,6 +41,8 @@ const handleData = async (locationData) => {
   tempJson.date = locationData.last_update;
 
   delete locationData.last_update; // we dont need it per county
+  delete locationData.AdmUnitId; // we dont need it per county
+  locationData.cases_per_100k = 0;
   locationData.cases7_per_100k = Number(
     locationData.cases7_per_100k.toFixed(1)
   );
@@ -66,6 +68,7 @@ fetch(endpoint)
         if (err) throw err;
       });
     }
+    console.log(tempJson.locations);
     tempJson.locations.sort((a, b) => {
       return a.cases7_per_100k - b.cases7_per_100k;
     });
